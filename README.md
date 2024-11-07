@@ -1,50 +1,58 @@
-# React + TypeScript + Vite
+# React Playground
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React Playground 是一个交互式环境，用户可以实时编写、编译和预览 React 代码。本项目允许用户在 Monaco Editor 中编写 JSX 代码，并实时查看预览，支持代码格式化和语法高亮等功能。
 
-Currently, two official plugins are available:
+## 功能特性
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **实时代码预览**：编写 React JSX 代码并立即查看渲染结果。
+- **语法高亮**：使用 Monaco Editor 提供增强的代码编辑体验。
+- **自动格式化**：支持快捷键自动格式化代码（例如 `Ctrl/Cmd + J`）。
+- **代码隔离**：代码在安全的沙箱环境中运行，避免污染主页面。
+- **模块支持**：通过 `import maps` 支持从 CDN 加载 React 和 ReactDOM 模块。
 
-## Expanding the ESLint configuration
+## 快速开始
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### 前置要求
 
-- Configure the top-level `parserOptions` property like this:
+- 已安装 [Node.js](https://nodejs.org/)
+- 使用 [npm](https://www.npmjs.com/) 或 [yarn](https://yarnpkg.com/) 包管理器
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### 安装步骤
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+1. 克隆此仓库：
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+   ```bash
+   git clone https://github.com/your-username/react-playground.git
+   cd react-playground
+  ```
+2. 安装依赖：
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+   ```bash
+   npm install
+  ```
+
+### 项目结构
+
+项目的基本文件结构如下：
+
+react-playground/
+├── public/
+├── src/
+│   ├── components/
+│   │   └── Editor.tsx        # Monaco 编辑器 组件
+│   │   └── Header.tsx        # 头部组件
+│   │   └── Playground.tsx    # Playground 组件
+│   │   └── Preview.tsx       # 预览 组件
+│   ├── App.tsx               # 应用主入口
+│   ├── index.tsx             # 渲染 App 组件
+├── README.md
+├── package.json
+└── tsconfig.json
+
+
+### 实现原理
+
+1. **代码转译**：使用 @babel/standalone 将用户编写的 React JSX 代码实时转译为浏览器可执行的 JavaScript。
+2. **动态代码预览**：通过 Blob 和 URL.createObjectURL 将转译后的 JavaScript 代码生成一个临时的 URL，使其在浏览器中作为独立的可执行文件进行加载和运行。
+3. **实时隔离渲染**：使用 iframe 作为沙箱环境，在其中加载并渲染转译后的代码，确保代码执行与主页面隔离，并实现实时更新。
+4. **动态模块加载**：利用 esm.sh CDN 服务，按需加载第三方库（如 React 和 ReactDOM），无需在本地安装依赖，提升加载速度和灵活性。
