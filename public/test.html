@@ -1,0 +1,63 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<script>
+    const code1 =`
+    function add(a, b) {
+        return a + b;
+    }
+    export { add };
+    `;
+
+    const url = URL.createObjectURL(new Blob([code1], { type: 'application/javascript' }));
+    const code2 = `import { add } from "${url}";
+
+    console.log(add(2, 3));`;
+
+    const script = document.createElement('script');
+    script.type="module";
+    script.textContent = code2;
+    document.body.appendChild(script);
+</script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Code Runner</title>
+</head>
+<body>
+    <textarea id="codeInput" rows="10" cols="50">// Write your JS code here</textarea>
+    <button onclick="runCode()">Run Code</button>
+    <div id="output"></div>
+
+    <script>
+        function runCode() {
+            const code = document.getElementById('codeInput').value;
+            const blob = new Blob([code], { type: 'application/javascript' });
+            const url = URL.createObjectURL(blob);
+
+            import(url)
+                .then(module => {
+                    document.getElementById('output').innerText = "Code executed successfully";
+                })
+                .catch(error => {
+                    document.getElementById('output').innerText = `Error: ${error.message}`;
+                })
+                .finally(() => {
+                    URL.revokeObjectURL(url); // Clean up the blob URL
+                });
+        }
+    </script>
+</body>
+</html>
