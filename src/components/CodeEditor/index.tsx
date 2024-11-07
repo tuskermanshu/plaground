@@ -1,25 +1,30 @@
 import styles from './index.module.scss'
 import Editor from "../Editor/index"
 import FileNameList from "../FileNameList/index"
+import { useContext } from 'react'
+import { PlaygroundContext } from '../Playground/playgroundContext'
+
+import {debounce} from "lodash-es"
 
 
   const CodeEditor = () => {
 
-    const file = {
-      name: 'test.tsx',
-      value: 'import lodash from "lodash";\n\nconst a = <div>test</div>',
-      language: 'typescript'
-  }
 
-  const handleEditChange = (arg,e) =>{
-    console.log(arg)
+  const {files,setFiles,setSelectedFileName,selectedFileName} = useContext(PlaygroundContext)
+
+  const file = files[selectedFileName]
+
+  const handleEditChange = (value,e) =>{
+    console.log(value)
     console.log(e)
+    files[file.name].value = value
+    setFiles({...files})
   }
 
     return (
         <div className={styles.codeEditor}>
           <FileNameList />
-          <Editor  file={file} onChange={handleEditChange}/>
+          <Editor  file={file} onChange={debounce(handleEditChange,500) }/>
         </div>
     )
   }

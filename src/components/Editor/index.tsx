@@ -23,14 +23,10 @@ const Editor:FC<EditorProps> = (props) => {
     const editorRef = useRef<unknown>(); // 编辑器实例
     const monacoRef = useRef<unknown>(); // monaco 实例
 
-    const code = ` import "./App.scss"
-    import lodash from "lodash"
+    if(file === undefined) return
 
-    export default function App(){
-        return <div>hello world</div>
-    }
-    
-    `;
+
+    console.log("file",file)
 
     const handleEditorMount:OnMount = (editor,monaco) =>{
 
@@ -52,6 +48,7 @@ const Editor:FC<EditorProps> = (props) => {
         })
 
         const ata = createATA((code,path) => {
+            console.log("path",path)
             monaco.languages.typescript.typescriptDefaults.addExtraLib(code,`file://${path}`)
         })
 
