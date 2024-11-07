@@ -17,21 +17,6 @@ React Playground 是一个交互式环境，用户可以实时编写、编译和
 - 已安装 [Node.js](https://nodejs.org/)
 - 使用 [npm](https://www.npmjs.com/) 或 [yarn](https://yarnpkg.com/) 包管理器
 
-### 安装步骤
-
-1. 克隆此仓库：
-
-   ```bash
-   git clone https://github.com/your-username/react-playground.git
-   cd react-playground
-  ```
-  
-2. 安装依赖：
-
-   ```bash
-   npm install
-  ```
-
 ### 项目结构
 
 项目的基本文件结构如下：
