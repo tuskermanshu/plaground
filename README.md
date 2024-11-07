@@ -36,18 +36,19 @@ React Playground 是一个交互式环境，用户可以实时编写、编译和
 项目的基本文件结构如下：
 
 react-playground/
-├── public/
-├── src/
-│   ├── components/
-│   │   └── Editor.tsx        # Monaco 编辑器 组件
-│   │   └── Header.tsx        # 头部组件
-│   │   └── Playground.tsx    # Playground 组件
-│   │   └── Preview.tsx       # 预览 组件
-│   ├── App.tsx               # 应用主入口
-│   ├── index.tsx             # 渲染 App 组件
-├── README.md
-├── package.json
-└── tsconfig.json
+- public/
+- src/
+  - components/
+    - Editor.tsx        # Monaco 编辑器组件
+    - Header.tsx        # 头部组件
+    - Playground.tsx    # Playground 组件
+    - Preview.tsx       # 预览组件
+  - App.tsx             # 应用主入口
+  - index.tsx           # 渲染 App 组件
+- README.md
+- package.json
+- tsconfig.json
+
 
 
 ### 实现原理
