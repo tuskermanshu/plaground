@@ -1,8 +1,9 @@
 
 import MonacoEditor, { EditorProps as monacoEditorProps, OnMount }  from '@monaco-editor/react'
 import { editor } from 'monaco-editor'
-import { FC, useRef } from 'react';
+import { FC, useContext, useRef } from 'react';
 import { createATA } from './ata';
+import { PlaygroundContext } from '../Playground/playgroundContext';
 
 interface EditorFile {
     name:string;
@@ -23,10 +24,11 @@ const Editor:FC<EditorProps> = (props) => {
     const editorRef = useRef<unknown>(); // 编辑器实例
     const monacoRef = useRef<unknown>(); // monaco 实例
 
+    const {theme} = useContext(PlaygroundContext)
+
     if(file === undefined) return
 
-
-
+    
     const handleEditorMount:OnMount = (editor,monaco) =>{
 
         editorRef.current = editor;
@@ -76,6 +78,7 @@ const Editor:FC<EditorProps> = (props) => {
                       verticalScrollbarSize: 6,
                       horizontalScrollbarSize: 6,
                     },
+                    theme:`vs-${theme}`,
                     ...options
                 }
             }

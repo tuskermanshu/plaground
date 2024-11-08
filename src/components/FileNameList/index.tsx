@@ -36,13 +36,13 @@ export default function FileNameList() {
 
     return <div className={styles.tabs}>
         {
-            tabs.map((item, index,arr) => (
+            tabs.map((item, index) => (
                 <FileNameItem 
                     key={item + index}  
                     value={item} 
                     readonly={readonlyFiles.includes(item)}
                     isActive={selectedFileName === item} 
-                    isCreate={isCreate && index === arr.length - 1}
+                    isCreate={isCreate }
                     onClick={() => setSelectedFileName(item)}
                     onEditComplete={(name:string)=>handleEditComplete(name,item)}
                 />

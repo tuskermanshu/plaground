@@ -3,7 +3,7 @@ import styles from '../FileNameList/index.module.scss'
 
 import classnames from 'classnames'
 import React, { useState, useRef, useEffect, useContext } from 'react'
-import { ENTRY_FILE_NAME } from '@/template';
+import { APP_COMPONENT_FILE_NAME } from '@/template';
 import { PlaygroundContext } from '../Playground/playgroundContext';
 
 
@@ -30,7 +30,7 @@ export const FileNameItem: React.FC<FileNameItemProps> = (props) => {
   const [editing, setEditing] = useState(isCreate)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const { removeFile,setSelectedFileName} = useContext(PlaygroundContext)
+  const { theme,removeFile,setSelectedFileName} = useContext(PlaygroundContext)
 
   useEffect(()=>{
     if(isCreate) {
@@ -50,13 +50,14 @@ export const FileNameItem: React.FC<FileNameItemProps> = (props) => {
 
   const handleDeleteTabsClick = (e:React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     e.stopPropagation()
-    setSelectedFileName(ENTRY_FILE_NAME)
     removeFile(name)
+    setSelectedFileName(APP_COMPONENT_FILE_NAME)
+
   }
 
   return (
     <div
-      className={classnames(styles['tab-item'], isActive ? styles.isActive : null)}
+      className={classnames(styles['tab-item'], isActive ? styles.isActive : null,theme)}
       onClick={onClick}
     >
         {

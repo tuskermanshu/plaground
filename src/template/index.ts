@@ -34,6 +34,6 @@ export const initFiles: Files = {
     name: IMPORT_MAP_FILE_NAME,
     language: fileName2Language(IMPORT_MAP_FILE_NAME),
     value: importMap as unknown as string,
-  },
+  }
 
 }

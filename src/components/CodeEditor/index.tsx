@@ -10,11 +10,12 @@ import {debounce} from "lodash-es"
   const CodeEditor = () => {
 
 
-  const {files,setFiles,setSelectedFileName,selectedFileName} = useContext(PlaygroundContext)
+  const {files,setFiles,selectedFileName} = useContext(PlaygroundContext)
+
 
   const file = files[selectedFileName]
 
-  const handleEditChange = (value,e) =>{
+  const handleEditChange = (value:string) =>{
     files[file.name].value = value
     setFiles({...files})
   }
@@ -22,7 +23,10 @@ import {debounce} from "lodash-es"
     return (
         <div className={styles.codeEditor}>
           <FileNameList />
-          <Editor  file={file} onChange={debounce(handleEditChange,500) }/>
+          <Editor  
+              file={file} 
+              onChange={debounce(handleEditChange,500) } 
+          />
         </div>
     )
   }
