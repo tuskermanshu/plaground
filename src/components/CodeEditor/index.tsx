@@ -15,8 +15,6 @@ import {debounce} from "lodash-es"
   const file = files[selectedFileName]
 
   const handleEditChange = (value,e) =>{
-    console.log(value)
-    console.log(e)
     files[file.name].value = value
     setFiles({...files})
   }

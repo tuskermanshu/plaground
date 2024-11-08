@@ -1,60 +1,54 @@
+import styles from './index.module.scss'
 import { useContext, useEffect, useState } from "react"
+import { FileNameItem } from "../FileNameItem"
 import { PlaygroundContext } from "../Playground/playgroundContext"
+import { APP_COMPONENT_FILE_NAME, APP_CSS_FILE_NAME, ENTRY_FILE_NAME, IMPORT_MAP_FILE_NAME } from '@/template'
 
-import {  Tabs } from 'antd';
+export default function FileNameList() {
+    const { 
+        files, 
+        addFile, 
+        updateFile, 
+        selectedFileName,
+        setSelectedFileName
+    } = useContext(PlaygroundContext)
 
-interface TabsStruct {
-    key:string;
-    label: string;
-}
+    const [tabs, setTabs] = useState([''])
+    const [isCreate,setIsCreate] = useState(false)
 
-type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
+    const readonlyFiles = [APP_COMPONENT_FILE_NAME,ENTRY_FILE_NAME,IMPORT_MAP_FILE_NAME,APP_CSS_FILE_NAME]
 
-const FileNameList = () => {
-    const {files,removeFile,addFile,updateFile,selectedFileName,setSelectedFileName} = useContext(PlaygroundContext)
-
-    const [tabs,setTabs] = useState<TabsStruct[]>([])
-
-    useEffect(()=>{
-       const result = Object.keys(files).map(item => {
-            return {
-                key:item,
-                label:item
-            }
-        })
-        setTabs(result)
-    },[files])
+    useEffect(() => {
+        setTabs(Object.keys(files))
+    }, [files])
 
 
+   const handleEditComplete = (name:string,preName:string) =>{
+    updateFile(preName,name);
+    setSelectedFileName(name)
+   }
+
+   const handleAddTabClick = () => {
+    addFile()
+    setIsCreate(true)
+   }
 
 
-    const handleFileClick = (fileName:string) => {
-        setSelectedFileName(fileName)
-    }
-
-    const handleFileEdit = (targetKey:TargetKey,action:'add' | 'remove') => {
-        if(action === 'add'){
-            addFile()
-
-        }else{
-            removeFile(targetKey as string)
+    return <div className={styles.tabs}>
+        {
+            tabs.map((item, index,arr) => (
+                <FileNameItem 
+                    key={item + index}  
+                    value={item} 
+                    readonly={readonlyFiles.includes(item)}
+                    isActive={selectedFileName === item} 
+                    isCreate={isCreate && index === arr.length - 1}
+                    onClick={() => setSelectedFileName(item)}
+                    onEditComplete={(name:string)=>handleEditComplete(name,item)}
+                />
+                
+            ))
         }
-    }
-
-
-
-    return (
-        <div>
-            <Tabs     
-            type="editable-card"
-            size="small"
-            onChange={handleFileClick}
-            activeKey={selectedFileName}
-            onEdit={handleFileEdit}
-            items={tabs} 
-            />
-        </div>
-    )
+        <div className={styles.add} onClick={handleAddTabClick}>+</div>
+    </div>
 }
-
-export default FileNameList

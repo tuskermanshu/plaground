@@ -26,13 +26,13 @@ const Editor:FC<EditorProps> = (props) => {
     if(file === undefined) return
 
 
-    console.log("file",file)
 
     const handleEditorMount:OnMount = (editor,monaco) =>{
 
         editorRef.current = editor;
         monacoRef.current = monaco;
 
+        // 添加编译器指令
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyJ, ()=>{
             editor.getAction('editor.action.formatDocument')?.run()
 
@@ -42,13 +42,14 @@ const Editor:FC<EditorProps> = (props) => {
         })
 
 
+        // 添加ts提示框
         monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
             jsx:monaco.languages.typescript.JsxEmit.Preserve,
             esModuleInterop:true
         })
 
+        // 通过ata检索代码中的ts文件下载对应的D.TS
         const ata = createATA((code,path) => {
-            console.log("path",path)
             monaco.languages.typescript.typescriptDefaults.addExtraLib(code,`file://${path}`)
         })
 

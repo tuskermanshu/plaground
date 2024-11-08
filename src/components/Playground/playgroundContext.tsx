@@ -34,28 +34,44 @@ export const PlaygroundContext = createContext<PlaygroundContext>({
 
 
 export const PlaygroundProvider:FC<object & PropsWithChildren> = (props) =>{
-    const {children} = props
-    const [files, setFiles] = useState<Files>(initFiles)
-    const [selectedFileName,setSelectedFileName] = useState('App.tsx');
+    const { children } = props;
+    const [files, setFiles] = useState<Files>(initFiles);
+    const [selectedFileName, setSelectedFileName] = useState("App.tsx");
     const [fileCount, setFileCount] = useState(1);
+    const [availableFileNumbers, setAvailableFileNumbers] = useState<number[]>([]);
 
-    console.log("nitFiles['App.tsx']",initFiles['App.tsx'])
     const addFile = () => {
-        files[`comp${fileCount}`] = {
-            name:`comp${fileCount}`,
+        // Determine the new file number to use
+        const newFileNumber =
+            availableFileNumbers.length > 0
+                ? availableFileNumbers.shift()!
+                : fileCount;
+
+        files[`comp${newFileNumber}`] = {
+            name: `comp${newFileNumber}`,
             language: "typescript",
-            value: initFiles['App.tsx'].value as unknown as string
+            value: initFiles["App.tsx"].value as unknown as string,
         };
 
         setFiles({ ...files });
-        setFileCount(fileCount + 1); // 更新文件计数器
-    }
+        setAvailableFileNumbers([...availableFileNumbers]); // update state for available numbers
 
-    const removeFile = (name:string) => {
-        delete files[name]
-        setFiles({...files})
-    }
+        // If we used fileCount, increment it for future files
+        if (newFileNumber === fileCount) {
+            setFileCount(fileCount + 1);
+        }
+    };
 
+    const removeFile = (name: string) => {
+        // Extract the number from the file name (e.g., "comp3" -> 3)
+        const fileNumber = parseInt(name.replace("comp", ""), 10);
+        if (!isNaN(fileNumber)) {
+            setAvailableFileNumbers([...availableFileNumbers, fileNumber].sort((a, b) => a - b));
+        }
+        delete files[name];
+        setFiles({ ...files });
+    };
+    
     const updateFile = (oldFieldName: string, newFieldName: string) => {
         if (!files[oldFieldName] || newFieldName === undefined || newFieldName === null) return
         const { [oldFieldName]: value, ...rest } = files
