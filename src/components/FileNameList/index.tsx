@@ -20,7 +20,6 @@ export default function FileNameList() {
 
     useEffect(() => {
         setTabs(Object.keys(files))
-        console.log("Object.keys(files)",Object.keys(files))
     }, [files])
 
 

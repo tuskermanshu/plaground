@@ -32,7 +32,7 @@ const Editor:FC<EditorProps> = (props) => {
 
     // 在编辑器挂载前设置主题
     const handleBeforeMount:BeforeMount = (monaco) =>{
-        console.log("monaco",monaco)
+        
         monaco.editor.setTheme(`vs-${theme}`)
     }
     

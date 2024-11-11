@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useRef, useState, useCallback } from "react";
 import { Files, PlaygroundContext } from "../Playground/playgroundContext";
 import compilerWorker from './compiler.worker?worker';
@@ -105,6 +106,7 @@ const Preview = () => {
     // 处理选中文件变化
     useEffect(() => {
         const currentFile = files[selectedFileName];
+        console.log("currentFile.language",currentFile.language)
         const isNonJsFile = currentFile.language === 'css' || currentFile.language === '"json"';
         
         // 根据文件类型设置不同的代码内容
@@ -133,24 +135,28 @@ const Preview = () => {
     );
 
     // 渲染内容区域
-    const renderContent = () => {
-        if (selectedTab === 'Preview') {
-            return <iframe ref={iframeRef} className="w-full h-full" src={iframeUrl} />;
-        }
-
-        return (
-            <Editor 
-                file={{
-                    name: 'dist.js',
-                    value: babelCode,
-                    language: 'javascript'
-                }}
-                options={{
-                    readOnly: true
-                }}
-            />
-        );
-    };
+   const renderContent = () => {
+    return (
+        <>
+            {/* 使用 CSS 控制显示/隐藏，而不是条件渲染 */}
+            <div style={{ display: selectedTab === 'Preview' ? 'block' : 'none', height: '100%' }}>
+                <iframe ref={iframeRef} className="w-full h-full" src={iframeUrl} />
+            </div>
+            <div style={{ display: selectedTab === 'JS' ? 'block' : 'none', height: '100%' }}>
+                <Editor 
+                    file={{
+                        name: 'dist.js',
+                        value: babelCode,
+                        language: 'javascript'
+                    }}
+                    options={{
+                        readOnly: true
+                    }}
+                />
+            </div>
+        </>
+    );
+};
 
     return (
         <div className="h-full">
