@@ -26,7 +26,7 @@ const BLOB_TYPE = "text/html";  // Blob 类型
 
 const Preview = () => {
     // 从上下文获取文件相关信息
-    const { files, selectedFileName } = useContext(PlaygroundContext);
+    const { files, selectedFileName,refreshKey  } = useContext(PlaygroundContext);
 
         // 获取 iframe URL 的工具函数
         const getIframeUrl = useCallback((iframeRaw: string, files: Files, compiledCode: string) => {
@@ -106,7 +106,6 @@ const Preview = () => {
     // 处理选中文件变化
     useEffect(() => {
         const currentFile = files[selectedFileName];
-        console.log("currentFile.language",currentFile.language)
         const isNonJsFile = currentFile.language === 'css' || currentFile.language === '"json"';
         
         // 根据文件类型设置不同的代码内容
@@ -140,7 +139,7 @@ const Preview = () => {
         <>
             {/* 使用 CSS 控制显示/隐藏，而不是条件渲染 */}
             <div style={{ display: selectedTab === 'Preview' ? 'block' : 'none', height: '100%' }}>
-                <iframe ref={iframeRef} className="w-full h-full" src={iframeUrl} />
+                <iframe key={refreshKey} ref={iframeRef} className="w-full h-full" src={iframeUrl} />
             </div>
             <div style={{ display: selectedTab === 'JS' ? 'block' : 'none', height: '100%' }}>
                 <Editor 

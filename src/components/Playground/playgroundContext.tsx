@@ -28,6 +28,8 @@ export interface PlaygroundContext {
     addFile: () => void;
     removeFile: (fileName: string) => void;
     updateFile: (oldFieldName: string, newFieldName: string) => void;
+    refreshKey:number;
+    refreshIframe:()=>void;
 }
 
 export const PlaygroundContext = createContext<PlaygroundContext>({
@@ -65,6 +67,7 @@ export const PlaygroundProvider: FC<object & PropsWithChildren> = (props) => {
     const [files, setFiles] = useState<Files>(getFilesFromUrl() || initFiles);
     const [selectedFileName, setSelectedFileName] = useState("App.tsx");
     const [fileCount, setFileCount] = useState(1);
+    const [refreshKey, setRefreshKey] = useState(0);
     const [availableFileNumbers, setAvailableFileNumbers] = useState<number[]>([]);
     const [theme,setTheme] = useState<Theme>(window.localStorage.getItem('theme')as Theme || 'light')
 
@@ -130,6 +133,11 @@ export const PlaygroundProvider: FC<object & PropsWithChildren> = (props) => {
     };
 
 
+    const refreshIframe = () => {
+        setRefreshKey(prev => prev + 1);
+      };
+
+
 
 
 
@@ -146,6 +154,8 @@ export const PlaygroundProvider: FC<object & PropsWithChildren> = (props) => {
                 addFile,
                 updateFile,
                 removeFile,
+                refreshKey,
+                refreshIframe
             }}
         >
             {children}

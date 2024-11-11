@@ -4,7 +4,7 @@ import styles from './index.module.scss'
 
 import logo from "@/assets/icon/logo.svg"
 import { PlaygroundContext } from '../Playground/playgroundContext'
-import {  DownloadOutlined, MoonOutlined,ShareAltOutlined,SunOutlined,GithubOutlined } from '@ant-design/icons'
+import {  DownloadOutlined, MoonOutlined,ShareAltOutlined,SunOutlined,GithubOutlined, ReloadOutlined } from '@ant-design/icons'
 import copy from 'copy-to-clipboard'
 import { message } from 'antd'
 import { downloadFiles } from '@/utils'
@@ -12,7 +12,7 @@ import classNames from 'classnames'
 
 
 const Header = () => {
-    const {files,theme,setTheme} = useContext(PlaygroundContext)
+    const {files,theme,setTheme,refreshIframe} = useContext(PlaygroundContext)
 
     return (
         <div className={styles.header}>
@@ -26,6 +26,11 @@ const Header = () => {
                     onClick={ () => {
                         window.open('https://github.com/tuskermanshu', '_blank');
                     }}
+                />
+                <ReloadOutlined
+                    className="ml-3"
+                    title="刷新预览"
+                    onClick={refreshIframe}
                 />
                 {theme === 'light' && (
                     <MoonOutlined
