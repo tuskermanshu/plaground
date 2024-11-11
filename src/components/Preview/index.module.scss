@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
 
-    height: 40px;
+    height: 39px;
     overflow-y: hidden;
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;
@@ -12,7 +12,6 @@
 
     & .tab-item {
         display: inline-flex;
-        height: 30px;
         margin: 10px ;
         font-size: 13px;
         line-height: 20px;
@@ -20,33 +19,13 @@
         align-items: center;
         border-bottom: 3px solid transparent;
         white-space: nowrap;
-
-        .tabs-item-input {
-            width: 120px;
-            padding: 4px 0 4px 10px;
-            font-size: 13px;
-            color: #444;
-            background-color: #ddd;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            outline: none;
-            margin-top: 4px;
-        }
         
-
         &.isActive {
             color: skyblue;
             // border-bottom: 2px solid skyblue;
             // padding-bottom: 2px;
         }
 
-        &:first-child {
-            cursor: text;
-        }
-    }
-
-    & .add {
-        cursor: pointer;
     }
 
     &::-webkit-scrollbar {

@@ -1,5 +1,5 @@
 
-import MonacoEditor, { EditorProps as monacoEditorProps, OnMount }  from '@monaco-editor/react'
+import MonacoEditor, { BeforeMount, EditorProps as monacoEditorProps, OnMount }  from '@monaco-editor/react'
 import { editor } from 'monaco-editor'
 import { FC, useContext, useRef } from 'react';
 import { createATA } from './ata';
@@ -26,8 +26,15 @@ const Editor:FC<EditorProps> = (props) => {
 
     const {theme} = useContext(PlaygroundContext)
 
+
+
     if(file === undefined) return
 
+    // 在编辑器挂载前设置主题
+    const handleBeforeMount:BeforeMount = (monaco) =>{
+        console.log("monaco",monaco)
+        monaco.editor.setTheme(`vs-${theme}`)
+    }
     
     const handleEditorMount:OnMount = (editor,monaco) =>{
 
@@ -61,6 +68,8 @@ const Editor:FC<EditorProps> = (props) => {
 
         ata(editor.getValue())
     }
+
+
     return (
         <MonacoEditor 
             className=' h-full' 
@@ -78,10 +87,11 @@ const Editor:FC<EditorProps> = (props) => {
                       verticalScrollbarSize: 6,
                       horizontalScrollbarSize: 6,
                     },
-                    theme:`vs-${theme}`,
+                    theme: theme === 'light' ? 'vs' : `vs-${theme}`,
                     ...options
                 }
             }
+            beforeMount={handleBeforeMount}
             onMount={handleEditorMount}
             onChange={onChange}
         />

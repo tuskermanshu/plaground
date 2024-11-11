@@ -4,10 +4,11 @@ import styles from './index.module.scss'
 
 import logo from "@/assets/icon/logo.svg"
 import { PlaygroundContext } from '../Playground/playgroundContext'
-import {  DownloadOutlined, MoonOutlined,ShareAltOutlined,SunOutlined } from '@ant-design/icons'
+import {  DownloadOutlined, MoonOutlined,ShareAltOutlined,SunOutlined,GithubOutlined } from '@ant-design/icons'
 import copy from 'copy-to-clipboard'
 import { message } from 'antd'
 import { downloadFiles } from '@/utils'
+import classNames from 'classnames'
 
 
 const Header = () => {
@@ -20,17 +21,23 @@ const Header = () => {
                 <span>React Playground</span>
             </div>
             <div>
+                <GithubOutlined 
+                    className=' ml-3'
+                    onClick={ () => {
+                        window.open('https://github.com/tuskermanshu', '_blank');
+                    }}
+                />
                 {theme === 'light' && (
                     <MoonOutlined
                         title='切换暗色主题'
-                        className={styles.theme}
+                        className={classNames(styles.theme,'ml-3')}
                         onClick={() => setTheme('dark')}
                     />
                 )}
                 {theme === 'dark' && (
                     <SunOutlined
                         title='切换亮色主题'
-                        className={styles.theme}
+                        className={classNames(styles.theme,'ml-3')}
                         onClick={() => setTheme('light')}
                     />
                 )}

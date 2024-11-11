@@ -1,6 +1,6 @@
 import { transform } from '@babel/standalone';
 import { Files, File } from '../Playground/playgroundContext';
-import { APP_COMPONENT_FILE_NAME, ENTRY_FILE_NAME } from '../../template';
+import {  ENTRY_FILE_NAME } from '../../template';
 import { PluginObj } from '@babel/core';
 
 /**
@@ -11,7 +11,7 @@ import { PluginObj } from '@babel/core';
  * @param files - 包含所有文件内容的对象，用于依赖解析。
  * @returns 转换后的 JavaScript 代码字符串，如果出错则返回 undefined。
  */
-export const babelTransform = (filename: string, code: string, files: Files): string | undefined => {
+export const babelTransform = (filename: string, code: string, files: Files): string | undefined | null => {
     try {
         return transform(code, {
             presets: ['react', 'typescript'],
@@ -20,7 +20,7 @@ export const babelTransform = (filename: string, code: string, files: Files): st
             retainLines: true,                // 保留行号，便于调试
         }).code;
     } catch (error) {
-        console.log("编译出错", error); // 编译出错时记录错误信息
+        console.error("编译出错", error); // 编译出错时记录错误信息
     }
 };
 
@@ -117,7 +117,21 @@ const customResolver = (files: Files): PluginObj => ({
  * @param files - 包含所有文件内容的对象，其中 ENTRY_FILE_NAME 为主文件。
  * @returns 转换后的 JavaScript 代码字符串，如果出错则返回 undefined。
  */
-export const compiler = (files: Files): string | undefined => {
+export const compiler = (files: Files): string | undefined | null=> {
     const main = files[ENTRY_FILE_NAME];
     return babelTransform(ENTRY_FILE_NAME, main.value, files);
 };
+
+
+self.addEventListener('message', async ({ data }) => {
+    try {
+        self.postMessage({
+            type: 'COMPILED_CODES',
+            data: compiler(data)
+        })
+    } catch (e) {
+         self.postMessage({ type: 'ERROR', error: e })
+    }
+})
+
+
